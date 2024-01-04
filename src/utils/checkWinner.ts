@@ -1,17 +1,32 @@
 import { BoardType, PlayersMarker } from "../types/boardTypes";
 
-const checkFunctions: ((board: BoardType) => PlayersMarker | null)[] = [
+type Cell = {
+  row: number;
+  column: number;
+};
+type WinnerFoundResult = {
+  winner: PlayersMarker;
+  winningCells: Cell[];
+};
+
+type WinnerNotFoundResult = {
+  winner: null;
+};
+
+type CheckWinnerResult = WinnerFoundResult | WinnerNotFoundResult;
+
+const checkFunctions: ((board: BoardType) => WinnerFoundResult | null)[] = [
   checkRows,
   checkColumns,
   checkDiagonals,
 ];
 
-export function checkWinner(board: BoardType): PlayersMarker | null {
+export function checkWinner(board: BoardType): CheckWinnerResult {
   const winner = checkFunctions
     .map((checkFunction) => checkFunction(board))
     .find((winner) => winner !== null);
 
-  if (!winner) return null;
+  if (!winner) return { winner: null };
 
   return winner;
 }
@@ -25,12 +40,14 @@ function checkRows(board: BoardType) {
 
   for (let i = 0; i < gridSize; i++) {
     const marker = board[i][0];
+    const cells = [{ row: i, column: 0 }];
 
     if (marker === "") continue;
 
     for (let j = 1; j < gridSize; j++) {
       if (board[i][j] !== marker) break;
-      if (j === gridSize - 1) return marker;
+      cells.push({ row: i, column: j });
+      if (j === gridSize - 1) return { winner: marker, winningCells: cells };
     }
   }
   return null;
@@ -41,12 +58,14 @@ function checkColumns(board: BoardType) {
 
   for (let i = 0; i < gridSize; i++) {
     const marker = board[0][i];
+    const cells = [{ row: 0, column: i }];
 
     if (marker === "") continue;
 
     for (let j = 1; j < gridSize; j++) {
       if (board[j][i] !== marker) break;
-      if (j === gridSize - 1) return marker;
+      cells.push({ row: j, column: i });
+      if (j === gridSize - 1) return { winner: marker, winningCells: cells };
     }
   }
   return null;
@@ -62,11 +81,16 @@ function checkLeftRightDiagonal(board: BoardType) {
   if (gridSize % 2 === 0) return null;
 
   const marker = board[0][0];
+
   if (marker === "") return null;
+
+  const cells = [{ row: 0, column: 0 }];
+
   for (let i = 1; i < gridSize; i++) {
     if (board[i][i] === "") break;
     if (board[i][i] !== marker) break;
-    if (i === gridSize - 1) return marker;
+    cells.push({ row: i, column: i });
+    if (i === gridSize - 1) return { winner: marker, winningCells: cells };
   }
 
   return null;
@@ -80,10 +104,13 @@ function checkRightLeftDiagonal(board: BoardType) {
   const marker = board[0][gridSize - 1];
   if (marker === "") return null;
 
+  const cells = [{ row: 0, column: gridSize - 1 }];
+
   for (let i = 1; i < gridSize; i++) {
     if (board[i][gridSize - 1 - i] === "") break;
     if (board[i][gridSize - 1 - i] !== marker) break;
-    if (i === gridSize - 1) return marker;
+    cells.push({ row: i, column: gridSize - 1 - i });
+    if (i === gridSize - 1) return { winner: marker, winningCells: cells };
   }
 
   return null;

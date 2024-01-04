@@ -14,13 +14,13 @@ export default function GameScreen() {
 
   const [turn, setTurn] = useState<PlayersMarker>("X");
 
-  const winner = checkWinner(board);
+  const winnerResult = checkWinner(board);
   const isDraw = checkDraw(board);
 
-  const isGameOngoing = !winner && !isDraw;
+  const isGameOngoing = !winnerResult && !isDraw;
 
   const handleClick = (i: number, j: number) => {
-    if (!!winner || board[i][j] !== "") return;
+    if (!!winnerResult.winner || board[i][j] !== "") return;
     const newBoard = board.map((row) => [...row]);
     newBoard[i][j] = turn;
     setBoard(newBoard);
@@ -33,8 +33,8 @@ export default function GameScreen() {
   };
 
   function getGameStatusMessage() {
-    if (winner !== null) {
-      return `Winner is ${winner}`;
+    if (winnerResult.winner !== null) {
+      return `Winner is ${winnerResult}`;
     }
 
     if (isDraw) {
