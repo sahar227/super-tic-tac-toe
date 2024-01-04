@@ -34,7 +34,7 @@ export default function GameScreen() {
 
   function getGameStatusMessage() {
     if (winnerResult.winner !== null) {
-      return `Winner is ${winnerResult}`;
+      return `Winner is ${winnerResult.winner}`;
     }
 
     if (isDraw) {
@@ -51,6 +51,7 @@ export default function GameScreen() {
         board={board}
         handleClick={handleClick}
         isGameOngoing={isGameOngoing}
+        winningCells={!!winnerResult.winner ? winnerResult.winningCells : []}
       />
       <button
         style={{ width: "fit-content", margin: "auto" }}

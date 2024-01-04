@@ -1,9 +1,5 @@
-import { BoardType, PlayersMarker } from "../types/boardTypes";
+import { BoardType, Cell, PlayersMarker } from "../types/boardTypes";
 
-type Cell = {
-  row: number;
-  column: number;
-};
 type WinnerFoundResult = {
   winner: PlayersMarker;
   winningCells: Cell[];

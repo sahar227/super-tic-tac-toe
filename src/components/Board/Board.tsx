@@ -1,14 +1,26 @@
 import classes from "./Board.module.css";
-import { BoardType } from "../../types/boardTypes";
+import { BoardType, Cell } from "../../types/boardTypes";
 
 interface Props {
   board: BoardType;
   isGameOngoing: boolean;
+  winningCells: Cell[];
   handleClick: (i: number, j: number) => void;
 }
 
-export default function Board({ board, isGameOngoing, handleClick }: Props) {
+export default function Board({
+  board,
+  isGameOngoing,
+  handleClick,
+  winningCells,
+}: Props) {
   const gridSize = board.length;
+
+  const isWinningCell = (row: number, column: number) => {
+    return winningCells.some(
+      (cell) => cell.row === row && cell.column === column
+    );
+  };
   return (
     <div
       className={`${classes.board} ${isGameOngoing ? classes.gameOngoing : ""}`}
@@ -38,9 +50,11 @@ export default function Board({ board, isGameOngoing, handleClick }: Props) {
                       onClick={() => handleClick(i, j)}
                     >
                       <div
-                        className={`${classes.piece} ${
-                          board[i][j] !== "" ? classes.added : ""
-                        }`}
+                        className={`
+                          ${classes.piece}
+                          ${board[i][j] !== "" ? classes.added : ""}
+                          ${isWinningCell(i, j) ? classes.winningPiece : ""}
+                        `}
                       >
                         {board[i][j]}
                       </div>

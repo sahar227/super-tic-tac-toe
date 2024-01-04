@@ -31,13 +31,27 @@
     transition: all 0.3s ease;
 }
 
-.gameOngoing .cell:hover:not(:has(.piece.added)) {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
 .piece.added {
     scale: 1;
     opacity: 1;
+}
+
+.winningPiece {
+    color: #2bff00;
+    animation: winningPiece 0.8s ease infinite alternate;
+}
+
+@keyframes winningPiece {
+    from {
+        scale: 0.5;
+    }
+    to {
+        scale: 1.5;
+    }
+}
+
+.gameOngoing .cell:hover:not(:has(.piece.added)) {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .cellTop {
@@ -55,3 +69,4 @@
 .cellBottom {
     border-bottom: none;
 }
+
