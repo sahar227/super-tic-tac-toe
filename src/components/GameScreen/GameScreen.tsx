@@ -17,7 +17,7 @@ export default function GameScreen() {
   const winnerResult = checkWinner(board);
   const isDraw = checkDraw(board);
 
-  const isGameOngoing = !winnerResult && !isDraw;
+  const isGameOngoing = !winnerResult.winner && !isDraw;
 
   const handleClick = (i: number, j: number) => {
     if (!!winnerResult.winner || board[i][j] !== "") return;
