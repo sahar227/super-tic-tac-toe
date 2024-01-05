@@ -2,14 +2,24 @@ import { useState } from "react";
 import { BoardType, CellState, PlayersMarker } from "../../types/boardTypes";
 import { checkDraw, checkWinner } from "../../utils/checkWinner";
 import Board from "../Board/Board";
+import { Link, useLocation } from "react-router-dom";
 
-const gridSize = 3;
+function getGameSettings(settings: any) {
+  const gridSize = parseInt(settings?.gridSize ?? 3);
 
-const initialBoard: BoardType = Array<Array<CellState>>(gridSize).fill(
-  Array<CellState>(gridSize).fill("")
-);
+  return {
+    gridSize,
+  };
+}
 
 export default function GameScreen() {
+  const { state: routerState } = useLocation();
+  const { gridSize } = getGameSettings(routerState);
+
+  const initialBoard: BoardType = Array<Array<CellState>>(gridSize).fill(
+    Array<CellState>(gridSize).fill("")
+  );
+
   const [board, setBoard] = useState(initialBoard);
 
   const [turn, setTurn] = useState<PlayersMarker>("X");
@@ -46,6 +56,9 @@ export default function GameScreen() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+      <Link style={{ marginRight: "auto", padding: "0 2rem" }} to="/">
+        Back
+      </Link>
       <h2>{getGameStatusMessage()}</h2>
       <Board
         board={board}
