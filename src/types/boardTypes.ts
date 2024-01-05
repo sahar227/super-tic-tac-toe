@@ -6,3 +6,5 @@ export type Cell = {
   row: number;
   column: number;
 };
+
+export type ControlType = "human" | "random";
