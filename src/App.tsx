@@ -16,7 +16,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div style={{ width: "100vw", textAlign: "center" }}>
-      <h1>React Tic-Tac-Toe</h1>
+      <h1>Super Tic-Tac-Toe</h1>
       <RouterProvider router={router} />
     </div>
   );
