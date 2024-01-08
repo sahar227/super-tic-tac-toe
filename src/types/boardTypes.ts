@@ -1,4 +1,8 @@
-export type PlayersMarker = "O" | "X";
+import { controlTypes } from "../data/controlTypes";
+import { playerMarkers } from "../data/playerMarkers";
+
+export type PlayersMarker = (typeof playerMarkers)[number];
+
 export type CellState = PlayersMarker | "";
 export type BoardType = Array<Array<CellState>>;
 
@@ -7,4 +11,4 @@ export type Cell = {
   column: number;
 };
 
-export type ControlType = "human" | "random";
+export type ControlType = keyof typeof controlTypes;

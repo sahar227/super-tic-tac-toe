@@ -1,3 +1,4 @@
+import { controlTypes } from "../../../data/controlTypes";
 import { ControlType, PlayersMarker } from "../../../types/boardTypes";
 
 interface Props {
@@ -15,8 +16,11 @@ export default function PlayerSelectDropdown(props: Props) {
         value={props.controlType}
         onChange={(e) => props.setControlType(e.target.value as ControlType)}
       >
-        <option value="human">Human</option>
-        <option value="random">Bot - Random</option>
+        {Object.entries(controlTypes).map(([key, value]) => (
+          <option key={key} value={key}>
+            {value.label}
+          </option>
+        ))}
       </select>
     </div>
   );

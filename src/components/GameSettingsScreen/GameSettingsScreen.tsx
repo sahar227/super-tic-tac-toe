@@ -2,27 +2,26 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ControlType, PlayersMarker } from "../../types/boardTypes";
 import PlayerSelectDropdown from "./PlayerSelectDropdown/PlayerSelectDropdown";
+import { playerMarkers } from "../../data/playerMarkers";
 
-const gridSizes = [3, 5, 7, 9];
+const gridSizes = [3, 5, 7, 9] as const;
 
 interface PlayerSettings {
   marker: PlayersMarker;
   control: ControlType;
 }
 
-const initialPlayersSettings: PlayerSettings[] = [
-  {
-    marker: "X",
+const initialPlayersSettings: PlayerSettings[] = playerMarkers.map((marker) => {
+  return {
+    marker,
     control: "human",
-  },
-  {
-    marker: "O",
-    control: "human",
-  },
-];
+  };
+});
 
 export default function GameSettingsScreen() {
-  const [gridSize, setGridSize] = React.useState(gridSizes[0]);
+  const [gridSize, setGridSize] = React.useState<(typeof gridSizes)[number]>(
+    gridSizes[0]
+  );
   const [playersSettings, setPlayersSettings] = React.useState(
     initialPlayersSettings
   );
