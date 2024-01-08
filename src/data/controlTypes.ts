@@ -1,4 +1,4 @@
 export const controlTypes = {
-  huamn: { label: "Human" },
+  human: { label: "Human" },
   random: { label: "Bot - Random" },
 } as const;
