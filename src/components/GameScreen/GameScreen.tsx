@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { BoardType, CellState, PlayersMarker } from "../../types/boardTypes";
+import { BoardType, CellState } from "../../types/boardTypes";
 import { checkDraw, checkWinner } from "../../utils/checkWinner";
 import Board from "../Board/Board";
 import { Link, useLocation } from "react-router-dom";
+import useTurn from "./useTurn";
 
 function getGameSettings(settings: any) {
   const gridSize = parseInt(settings?.gridSize ?? 3);
@@ -22,7 +23,7 @@ export default function GameScreen() {
 
   const [board, setBoard] = useState(initialBoard);
 
-  const [turn, setTurn] = useState<PlayersMarker>("X");
+  const { turn, turnNumber, endTurn, resetTurns } = useTurn();
 
   const winnerResult = checkWinner(board);
   const isDraw = checkDraw(board);
@@ -34,12 +35,12 @@ export default function GameScreen() {
     const newBoard = board.map((row) => [...row]);
     newBoard[i][j] = turn;
     setBoard(newBoard);
-    setTurn(turn === "X" ? "O" : "X");
+    endTurn();
   };
 
   const handleNewGame = () => {
     setBoard(initialBoard);
-    setTurn("X");
+    resetTurns();
   };
 
   function getGameStatusMessage() {
@@ -51,7 +52,7 @@ export default function GameScreen() {
       return "Draw";
     }
 
-    return `It is ${turn}'s turn`;
+    return `Turn ${turnNumber} -  It is ${turn}'s turn`;
   }
 
   return (
