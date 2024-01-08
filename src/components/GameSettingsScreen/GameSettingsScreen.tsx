@@ -1,50 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ControlType, PlayersMarker } from "../../types/boardTypes";
 import PlayerSelectDropdown from "./PlayerSelectDropdown/PlayerSelectDropdown";
-import { playerMarkers } from "../../data/playerMarkers";
+import usePlayerSettings from "./usePlayerSettings";
 
 const gridSizes = [3, 5, 7, 9] as const;
-
-interface PlayerSettings {
-  marker: PlayersMarker;
-  control: ControlType;
-}
-
-const initialPlayersSettings: PlayerSettings[] = playerMarkers.map((marker) => {
-  return {
-    marker,
-    control: "human",
-  };
-});
 
 export default function GameSettingsScreen() {
   const [gridSize, setGridSize] = React.useState<(typeof gridSizes)[number]>(
     gridSizes[0]
   );
-  const [playersSettings, setPlayersSettings] = React.useState(
-    initialPlayersSettings
-  );
 
-  const allState = {
-    gridSize,
-    playersSettings,
-  };
-
-  const updatePlayerControl =
-    (marker: PlayersMarker) => (control: ControlType) => {
-      setPlayersSettings((prev) => {
-        return prev.map((player) => {
-          if (player.marker === marker) {
-            return {
-              ...player,
-              control: control,
-            };
-          }
-          return player;
-        });
-      });
-    };
+  const { playersSettings, updatePlayerControl } = usePlayerSettings();
 
   return (
     <div
@@ -86,7 +52,7 @@ export default function GameSettingsScreen() {
         ))}
       </div>
 
-      <Link to="/game" state={allState}>
+      <Link to="/game" state={{ gridSize, playersSettings }}>
         Start Game
       </Link>
     </div>
