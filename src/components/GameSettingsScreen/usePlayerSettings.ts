@@ -1,18 +1,6 @@
 import { useState } from "react";
-import { playerMarkers } from "../../data/playerMarkers";
 import { ControlType, PlayersMarker } from "../../types/boardTypes";
-
-interface PlayerSettings {
-  marker: PlayersMarker;
-  control: ControlType;
-}
-
-const initialPlayersSettings: PlayerSettings[] = playerMarkers.map((marker) => {
-  return {
-    marker,
-    control: "human",
-  };
-});
+import { initialPlayersSettings } from "../../data/initialPlayersSettings";
 
 export default function usePlayerSettings() {
   const [playersSettings, setPlayersSettings] = useState(

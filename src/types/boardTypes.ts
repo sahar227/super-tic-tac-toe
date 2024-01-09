@@ -1,7 +1,7 @@
-import { controlTypes } from "../data/controlTypes";
-import { playerMarkers } from "../data/playerMarkers";
+import { z } from "zod";
+import { controlTypesSchema, playerMarkersSchema } from "./schemas";
 
-export type PlayersMarker = (typeof playerMarkers)[number];
+export type PlayersMarker = z.infer<typeof playerMarkersSchema>;
 
 export type CellState = PlayersMarker | "";
 export type BoardType = Array<Array<CellState>>;
@@ -11,4 +11,4 @@ export type Cell = {
   column: number;
 };
 
-export type ControlType = keyof typeof controlTypes;
+export type ControlType = z.infer<typeof controlTypesSchema>;

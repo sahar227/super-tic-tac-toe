@@ -4,18 +4,11 @@ import { checkDraw, checkWinner } from "../../utils/checkWinner";
 import Board from "../Board/Board";
 import { Link, useLocation } from "react-router-dom";
 import useTurn from "./useTurn";
-
-function getGameSettings(settings: any) {
-  const gridSize = parseInt(settings?.gridSize ?? 3);
-
-  return {
-    gridSize,
-  };
-}
+import { gameSettingsSchema } from "../../types/schemas";
 
 export default function GameScreen() {
   const { state: routerState } = useLocation();
-  const { gridSize } = getGameSettings(routerState);
+  const { gridSize, playerSettings } = gameSettingsSchema.parse(routerState);
 
   const initialBoard: BoardType = Array<Array<CellState>>(gridSize).fill(
     Array<CellState>(gridSize).fill("")
