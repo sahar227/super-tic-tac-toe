@@ -8,7 +8,10 @@ import { gameSettingsSchema } from "../../types/schemas";
 
 export default function GameScreen() {
   const { state: routerState } = useLocation();
-  const { gridSize, playerSettings } = gameSettingsSchema.parse(routerState);
+
+  const { gridSize, playerSettings } = gameSettingsSchema.parse(
+    routerState || {}
+  );
 
   const initialBoard: BoardType = Array<Array<CellState>>(gridSize).fill(
     Array<CellState>(gridSize).fill("")
