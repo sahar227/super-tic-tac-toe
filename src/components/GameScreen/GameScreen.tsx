@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BoardType, CellState } from "../../types/boardTypes";
 import { checkDraw, checkWinner } from "../../utils/checkWinner";
 import Board from "../Board/Board";
@@ -31,13 +31,30 @@ export default function GameScreen() {
 
   const isGameOngoing = !winnerResult.winner && !isDraw;
 
-  const handleClick = (i: number, j: number) => {
-    if (!!winnerResult.winner || board[i][j] !== "") return;
+  const currentPlayerSettings = playerSettings.find((v) => v.marker === turn)!;
+
+  const playTurn = (i: number, j: number) => {
     const newBoard = board.map((row) => [...row]);
     newBoard[i][j] = turn;
     setBoard(newBoard);
     endTurn();
   };
+
+  useEffect(() => {
+    if (currentPlayerSettings.control === "human") return;
+
+    const [i, j] = currentPlayerSettings.playerStrategy!(board);
+    playTurn(i, j);
+  }, [turn]);
+
+  function handleClick(i: number, j: number) {
+    if (!!winnerResult.winner || board[i][j] !== "") return;
+
+    if (currentPlayerSettings.control !== "human") {
+      return;
+    }
+    playTurn(i, j);
+  }
 
   const handleNewGame = () => {
     setBoard(initialBoard);
