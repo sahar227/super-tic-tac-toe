@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PlayerSelectDropdown from "./PlayerSelectDropdown/PlayerSelectDropdown";
 import usePlayerSettings from "./usePlayerSettings";
+import { GameSettings } from "../../types/boardTypes";
 
 const gridSizes = [3, 5, 7, 9] as const;
 
@@ -11,6 +12,11 @@ export default function GameSettingsScreen() {
   );
 
   const { playersSettings, updatePlayerControl } = usePlayerSettings();
+
+  const allSettings = {
+    gridSize,
+    playerSettings: playersSettings,
+  } satisfies GameSettings;
 
   return (
     <div
@@ -52,7 +58,7 @@ export default function GameSettingsScreen() {
         ))}
       </div>
 
-      <Link to="/game" state={{ gridSize, playersSettings }}>
+      <Link to="/game" state={allSettings}>
         Start Game
       </Link>
     </div>

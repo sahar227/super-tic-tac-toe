@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { controlTypesSchema, playerMarkersSchema } from "./schemas";
+import {
+  controlTypesSchema,
+  gameSettingsSchema,
+  playerMarkersSchema,
+} from "./schemas";
 
 export type PlayersMarker = z.infer<typeof playerMarkersSchema>;
 
@@ -12,3 +16,5 @@ export type Cell = {
 };
 
 export type ControlType = z.infer<typeof controlTypesSchema>;
+
+export type GameSettings = z.infer<typeof gameSettingsSchema>;

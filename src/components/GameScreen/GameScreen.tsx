@@ -6,12 +6,17 @@ import { Link, useLocation } from "react-router-dom";
 import useTurn from "./useTurn";
 import { gameSettingsSchema } from "../../types/schemas";
 
-export default function GameScreen() {
+const useGameSettings = () => {
   const { state: routerState } = useLocation();
+  const validationResult = gameSettingsSchema.safeParse(routerState || {});
+  if (!validationResult.success) {
+    return gameSettingsSchema.parse({});
+  }
+  return validationResult.data;
+};
 
-  const { gridSize, playerSettings } = gameSettingsSchema.parse(
-    routerState || {}
-  );
+export default function GameScreen() {
+  const { gridSize, playerSettings } = useGameSettings();
 
   const initialBoard: BoardType = Array<Array<CellState>>(gridSize).fill(
     Array<CellState>(gridSize).fill("")
