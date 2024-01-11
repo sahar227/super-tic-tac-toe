@@ -14,11 +14,6 @@ export const boardSchema = z.array(z.array(cellStateSChema));
 export const playerSettingsSchema = z.object({
   marker: playerMarkersSchema,
   control: controlTypesSchema,
-  playerStrategy: z
-    .function()
-    .args(boardSchema)
-    .returns(z.array(z.number(), z.number()))
-    .optional(),
 });
 
 export const gameSettingsSchema = z.object({
