@@ -9,6 +9,7 @@ export const controlTypes = {
 } as const;
 
 type getStrategyType<T> = T extends "human" ? null : typeof randomStrategy;
+
 export function getStrategy<T extends ControlType>(
   controlType: T
 ): getStrategyType<T> {

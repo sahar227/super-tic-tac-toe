@@ -37,17 +37,26 @@ export default function GameScreen() {
   const playTurn = (i: number, j: number) => {
     const newBoard = board.map((row) => [...row]);
     newBoard[i][j] = turn;
-    setBoard(newBoard);
+    setBoard((prev) => {
+      const newBoard = prev.map((row) => [...row]);
+      newBoard[i][j] = turn;
+      return newBoard;
+    });
     endTurn();
   };
 
   useEffect(() => {
     if (!isGameOngoing) return;
-    if (currentPlayerSettings.control === "human") return;
-    const playStrategy = getStrategy(currentPlayerSettings.control);
 
-    const { row, column } = playStrategy(board);
-    playTurn(row, column);
+    async function playTurnAsync() {
+      if (currentPlayerSettings.control === "human") return;
+
+      const playStrategy = getStrategy(currentPlayerSettings.control);
+      const { row, column } = await playStrategy(board);
+
+      playTurn(row, column);
+    }
+    playTurnAsync();
   }, [turn, isGameOngoing]);
 
   function handleClick(i: number, j: number) {
