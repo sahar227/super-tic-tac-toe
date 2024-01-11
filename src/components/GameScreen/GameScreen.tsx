@@ -5,6 +5,7 @@ import Board from "../Board/Board";
 import { Link, useLocation } from "react-router-dom";
 import useTurn from "./useTurn";
 import { gameSettingsSchema } from "../../types/schemas";
+import { getStrategy } from "../../data/controlTypes";
 
 const useGameSettings = () => {
   const { state: routerState } = useLocation();
@@ -41,11 +42,13 @@ export default function GameScreen() {
   };
 
   useEffect(() => {
+    if (!isGameOngoing) return;
     if (currentPlayerSettings.control === "human") return;
+    const playStrategy = getStrategy(currentPlayerSettings.control);
 
-    const [i, j] = currentPlayerSettings.playerStrategy!(board);
-    playTurn(i, j);
-  }, [turn]);
+    const { row, column } = playStrategy(board);
+    playTurn(row, column);
+  }, [turn, isGameOngoing]);
 
   function handleClick(i: number, j: number) {
     if (!!winnerResult.winner || board[i][j] !== "") return;
