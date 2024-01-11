@@ -8,7 +8,7 @@ const _betterRandomStrategy: StrategyType = async (board, player) => {
   const obviousBestMove = findObviousMove(board, player);
 
   if (obviousBestMove) return obviousBestMove;
-  return await _randomStrategy(board);
+  return _randomStrategy(board);
 };
 
 function findObviousMove(board: BoardType, marker: PlayersMarker): Cell | null {
