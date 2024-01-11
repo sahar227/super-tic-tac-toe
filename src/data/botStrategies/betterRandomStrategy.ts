@@ -1,23 +1,28 @@
 import { BoardType, Cell, PlayersMarker } from "../../types/boardTypes";
 import { StrategyType } from "../../types/strategyType";
 import { checkWinner } from "../../utils/checkWinner";
-import { randomStrategy } from "./randomStrategy";
+import { sleep } from "../../utils/sleep";
+import { _randomStrategy } from "./randomStrategy";
 
-export const betterRandomStrategy: StrategyType = async (board, player) => {
+const _betterRandomStrategy: StrategyType = async (board, player) => {
   const obviousBestMove = findObviousMove(board, player);
+
   if (obviousBestMove) return obviousBestMove;
-  return await randomStrategy(board, player);
+  return await _randomStrategy(board);
 };
 
 function findObviousMove(board: BoardType, marker: PlayersMarker): Cell | null {
-  let opponentBlock: Cell | null = null;
+  let opponentWinCell: Cell | null = null;
+  let playerWinCell: Cell | null = null;
   board.forEach((row, rowIndex) => {
+    if (playerWinCell) return;
     row.forEach((cell, columnIndex) => {
       if (cell === "") {
         const cell = { row: rowIndex, column: columnIndex };
         const winResult = checkWinPossibility(board, marker, cell);
         if (winResult) {
-          return cell;
+          playerWinCell = cell;
+          return;
         }
         const opponentMarker = marker === "X" ? "O" : "X";
         const opponentWinResult = checkWinPossibility(
@@ -26,12 +31,12 @@ function findObviousMove(board: BoardType, marker: PlayersMarker): Cell | null {
           cell
         );
         if (opponentWinResult) {
-          opponentBlock = { row: rowIndex, column: columnIndex };
+          opponentWinCell = { row: rowIndex, column: columnIndex };
         }
       }
     });
   });
-  return opponentBlock;
+  return playerWinCell || opponentWinCell;
 }
 
 function checkWinPossibility(
@@ -44,3 +49,8 @@ function checkWinPossibility(
   const winResult = checkWinner(newBoard);
   return winResult.winner === marker;
 }
+
+export const betterRandomStrategy: StrategyType = async (board, player) => {
+  await sleep(1000);
+  return _betterRandomStrategy(board, player);
+};
