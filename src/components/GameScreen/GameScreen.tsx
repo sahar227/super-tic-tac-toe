@@ -52,7 +52,7 @@ export default function GameScreen() {
       if (currentPlayerSettings.control === "human") return;
 
       const playStrategy = getStrategy(currentPlayerSettings.control);
-      const { row, column } = await playStrategy(board);
+      const { row, column } = await playStrategy(board, turn);
 
       playTurn(row, column);
     }
