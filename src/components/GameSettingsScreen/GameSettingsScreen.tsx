@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PlayerSelectDropdown from "./PlayerSelectDropdown/PlayerSelectDropdown";
 import usePlayerSettings from "./usePlayerSettings";
 import { GameSettings } from "../../types/boardTypes";
+import classes from "./GameSettingsScreen.module.css";
 
 const gridSizes = [3, 5, 7, 9] as const;
 
@@ -19,30 +20,19 @@ export default function GameSettingsScreen() {
   } satisfies GameSettings;
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        width: "fit-content",
-        margin: "auto",
-        gap: "8px",
-      }}
-    >
+    <div className={classes.pageContainer}>
       <div>
-        <p>Select Grid Size</p>
-        <div style={{ display: "flex", gap: "12px" }}>
+        <p style={{ fontSize: "larger" }}>Select Grid Size</p>
+        <div className={classes.gridSizeButtonContainer}>
           {gridSizes.map((size) => (
             <button
               key={size}
               onClick={() => setGridSize(size)}
-              style={{
-                border:
-                  size === gridSize
-                    ? "4px solid lightblue"
-                    : "4px solid transparent",
-              }}
+              className={`${classes.gridSizeButton} ${
+                size === gridSize ? classes.selected : ""
+              }`}
             >
-              {size}
+              {size} X {size}
             </button>
           ))}
         </div>
@@ -58,7 +48,7 @@ export default function GameSettingsScreen() {
         ))}
       </div>
 
-      <Link to="/game" state={allSettings}>
+      <Link to="/game" state={allSettings} className={classes.startGameLink}>
         Start Game
       </Link>
     </div>
