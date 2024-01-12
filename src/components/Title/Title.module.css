@@ -1,0 +1,7 @@
+.character {
+    display: inline-block;
+    transition: all 1.5s ease;
+    font-size: 4rem;
+    color: #fff;
+    text-shadow: 0 0 10px #fff;
+}

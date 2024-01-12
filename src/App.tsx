@@ -1,6 +1,7 @@
 import GameScreen from "./components/GameScreen/GameScreen";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import GameSettingsScreen from "./components/GameSettingsScreen/GameSettingsScreen";
+import Title from "./components/Title/Title";
 
 const router = createBrowserRouter([
   {
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div style={{ width: "100vw", textAlign: "center" }}>
-      <h1>Super Tic-Tac-Toe</h1>
+      <Title text="Super Tic-Tac-Toe" />
       <RouterProvider router={router} />
     </div>
   );
