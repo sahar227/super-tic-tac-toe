@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import classes from "./Title.module.css";
 // get random translate
-function getRandomPosition(range = 1000) {
-  const x = Math.random() * range - range / 2;
-  const y = Math.random() * range - range / 2;
+function getRandomPosition() {
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
+  const x = Math.random() * screenWidth - screenWidth / 2;
+  const y = Math.random() * screenHeight - screenHeight / 2;
   return [x, y];
 }
 
@@ -11,7 +13,10 @@ function TitleCharacter({ char }: { char: string }) {
   const [position, setPosition] = useState(() => getRandomPosition());
 
   useEffect(() => {
-    setPosition([0, 0]);
+    const interval = setInterval(() => {
+      setPosition([0, 0]);
+    }, 100);
+    return () => clearInterval(interval);
   }, []);
 
   return (
