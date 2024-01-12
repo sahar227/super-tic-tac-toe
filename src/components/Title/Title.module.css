@@ -1,11 +1,13 @@
 .character {
     display: inline-block;
-    transition: all 1.5s ease;
     font-size: 4rem;
-    color: #fff;
     text-shadow: 0 0 10px #fff;
     margin: 0;
     animation: reveal 2s ease;
+}
+
+.character.rotate {
+    animation: reveal 2s ease, rotate 1.5s linear infinite;
 }
 
 @keyframes reveal {
@@ -15,5 +17,15 @@
 
     100% {
         opacity: 1;
+    }
+}
+
+@keyframes rotate {
+    0% {
+        rotate: 0deg;
+    }
+
+    100% {
+        rotate: 360deg;
     }
 }

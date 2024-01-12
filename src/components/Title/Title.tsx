@@ -11,6 +11,8 @@ function getRandomPosition() {
 
 function TitleCharacter({ char }: { char: string }) {
   const [position, setPosition] = useState(() => getRandomPosition());
+  const [isFormed, setIsFormed] = useState(false);
+  const transformTime = 1.5;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -19,11 +21,19 @@ function TitleCharacter({ char }: { char: string }) {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsFormed(true);
+    }, transformTime * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <pre
-      className={classes.character}
+      className={`${classes.character} ${!isFormed ? classes.rotate : ""}`}
       style={{
         transform: `translate(${position[0]}px, ${position[1]}px)`,
+        transition: `transform ${transformTime}s ease`,
       }}
     >
       {char}
