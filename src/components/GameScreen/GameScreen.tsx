@@ -1,20 +1,16 @@
 import { useEffect, useRef, useState } from "react";
-import { BoardType, CellState } from "../../types/boardTypes";
+import {
+  BoardType,
+  CellState,
+  GameSettings,
+  PlayersMarker,
+} from "../../types/boardTypes";
 import { checkDraw, checkWinner } from "../../utils/checkWinner";
 import Board from "../Board/Board";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useTurn from "./useTurn";
-import { gameSettingsSchema } from "../../types/schemas";
 import { getStrategy } from "../../data/controlTypes";
-
-const useGameSettings = () => {
-  const { state: routerState } = useLocation();
-  const validationResult = gameSettingsSchema.safeParse(routerState || {});
-  if (!validationResult.success) {
-    return gameSettingsSchema.parse({});
-  }
-  return validationResult.data;
-};
+import { useGameSettings } from "./useGameSettings";
 
 const useBoard = (gridSize: number) => {
   const getInitialBoard: () => BoardType = () =>
@@ -41,11 +37,10 @@ const useBoard = (gridSize: number) => {
 };
 
 export default function GameScreen() {
-  const { gridSize, playerSettings } = useGameSettings();
-
-  const { board, resetBoard, setCell } = useBoard(gridSize);
-
   const { turn, turnNumber, endTurn, resetTurns } = useTurn();
+
+  const { gridSize, currentPlayerSettings } = useGameSettings(turn);
+  const { board, resetBoard, setCell } = useBoard(gridSize);
 
   const isBotPlaying = useRef(false);
 
@@ -53,8 +48,6 @@ export default function GameScreen() {
   const isDraw = checkDraw(board);
 
   const isGameOngoing = !winnerResult.winner && !isDraw;
-
-  const currentPlayerSettings = playerSettings.find((v) => v.marker === turn)!;
 
   const playTurn = (i: number, j: number) => {
     setCell(i, j, turn);
