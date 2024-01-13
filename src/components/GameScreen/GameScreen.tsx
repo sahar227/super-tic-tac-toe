@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BoardType, CellState } from "../../types/boardTypes";
 import { checkDraw, checkWinner } from "../../utils/checkWinner";
 import Board from "../Board/Board";
@@ -27,6 +27,8 @@ export default function GameScreen() {
 
   const { turn, turnNumber, endTurn, resetTurns } = useTurn();
 
+  const isBotPlaying = useRef(false);
+
   const winnerResult = checkWinner(board);
   const isDraw = checkDraw(board);
 
@@ -35,8 +37,6 @@ export default function GameScreen() {
   const currentPlayerSettings = playerSettings.find((v) => v.marker === turn)!;
 
   const playTurn = (i: number, j: number) => {
-    const newBoard = board.map((row) => [...row]);
-    newBoard[i][j] = turn;
     setBoard((prev) => {
       const newBoard = prev.map((row) => [...row]);
       newBoard[i][j] = turn;
@@ -48,6 +48,8 @@ export default function GameScreen() {
   useEffect(() => {
     if (!isGameOngoing) return;
 
+    if (isBotPlaying.current) return;
+
     async function playTurnAsync() {
       if (currentPlayerSettings.control === "human") return;
 
@@ -56,7 +58,8 @@ export default function GameScreen() {
 
       playTurn(row, column);
     }
-    playTurnAsync();
+    isBotPlaying.current = true;
+    playTurnAsync().then(() => (isBotPlaying.current = false));
   }, [turn, isGameOngoing]);
 
   function handleClick(i: number, j: number) {
